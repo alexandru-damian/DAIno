@@ -43,7 +43,6 @@ function build_config()
 
 function update(progress)
 {
-    console.log('Time is',startHoldTime);
 }
 
 function render()
@@ -81,12 +80,26 @@ function key_down(ev)
     }
 }
 
+function key_up(ev)
+{
+    switch (ev.keyCode)
+    {
+        case 38:
+            {
+                stopHoldTime = Date.now();
+            }
+            break;
+    }
+}
+
 function generate_scene()
 {
     build_config();
     load_data();
 
     window.addEventListener("keydown", key_down, false);
+    window.addEventListener("keyup", key_up, false);
+
     window.requestAnimationFrame(gameloop);
 }
 
