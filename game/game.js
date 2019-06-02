@@ -1,24 +1,33 @@
-var lastRender = 0;
+var lastTime = 0;
 var canv,ctx;
 
-var player_x = 0;
-var player_y = 0;
+var playerX = 0;
+var playerY = 0;
 
-var player_height = 0;
-var player_width = 0;
+var playerHeight = 0;
+var playerWidth = 0;
 
-var jump_force = 0;
-var JUMP_THRESHOLD = 40;
+var jumpForce = 0;
+
+var startHoldTime = 0;
+var stopHoldTime = 0;
+
+var jumping = false;
+
+var JUMP_THRESHOLD = 10;
+var ONE_SECOND = 1000;
 
 function load_player()
 {
-    player_width = 30;
-    player_height = 50;
+    playerWidth = 30;
+    playerHeight = 50;
 
-    player_x = 30;
-    player_y = 200;
+    playerX = 30;
+    playerY = 200;
 
-    jump_force = 5;
+    jumpForce = 5;
+
+    jumping = false;
 }
 
 function load_data()
@@ -34,31 +43,51 @@ function build_config()
 
 function update(progress)
 {
-    console.log(progress);
+    console.log('Time is',startHoldTime);
 }
 
 function render()
 {
-    ctx.fillRect(player_x, player_y, player_width, player_height);
+    ctx.clearRect(0, 0, canv.width, canv.height);
+
+    ctx.fillRect(playerX, playerY, playerWidth, playerHeight);
 }
 
-function gameloop(timestamp)
+function gameloop(currentTime)
 {
-    var progress = timestamp - lastRender;
+    var progress = (currentTime- lastTime)/ONE_SECOND;
 
     update(progress);
     render();
 
-    lastRender = timestamp;
+    lastTime = currentTime;
 
-    window.requestAnimationFrame(gameloop)
+    window.requestAnimationFrame(gameloop);
+}
+
+function key_down(ev)
+{
+    switch (ev.keyCode)
+    {
+        case 38:
+            {
+                if(!jumping)
+                {
+                    jumping = true;
+                    startHoldTime = Date.now();
+                }
+            }
+            break;
+    }
 }
 
 function generate_scene()
 {
     build_config();
     load_data();
-    window.requestAnimationFrame(gameloop)
+
+    window.addEventListener("keydown", key_down, false);
+    window.requestAnimationFrame(gameloop);
 }
 
 
