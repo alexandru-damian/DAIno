@@ -15,6 +15,7 @@ var stopHoldTime = 0;
 var dt = 0;
 
 var g = 0;
+
 var jumping = false;
 
 var MAX_FORCE = .6;
@@ -33,9 +34,7 @@ function load_player()
     playerX = 30;
     playerY = 100;
 
-    jumpForce = 5;
-    acc =.3;
-
+    jumpForce = MAX_FORCE;
     jumping = false;
 }
 
@@ -50,12 +49,24 @@ function build_config()
     ctx = canv.getContext("2d");
 }
 
+function jump()
+{
+    if(jumping)
+    {
+        playerY -= jumpForce * dt;
+        jumpForce -= .02;
+    }
+}
+
 function collide()
 {
     if(playerY > GROUND_LEVEL_Y)
     {
         g = 0;
         playerY = GROUND_LEVEL_Y;
+
+        jumpForce = MAX_FORCE;
+        jumping = false;
     }
 }
 
@@ -67,6 +78,7 @@ function fall()
 
 function update(progress)
 {
+    jump();
     fall();
     collide();
 }
@@ -76,6 +88,8 @@ function render()
     ctx.clearRect(0, 0, canv.width, canv.height);
 
     ctx.fillRect(playerX, playerY, playerWidth, playerHeight);
+    ctx.fillRect(0,GROUND_LEVEL_Y+playerHeight,canv.width,1)
+
 }
 
 function gameloop(currentTime)
