@@ -12,10 +12,18 @@ var jumpForce = 0;
 var startHoldTime = 0;
 var stopHoldTime = 0;
 
+var dt = 0;
+
+var g = 0;
 var jumping = false;
 
-var JUMP_THRESHOLD = 10;
+var MAX_FORCE = .6;
 var ONE_SECOND = 1000;
+
+var GRAVITATIONAL_FORCE= .005;
+
+var GROUND_LEVEL_X = 0;
+var GROUND_LEVEL_Y = 200;
 
 function load_player()
 {
@@ -23,9 +31,10 @@ function load_player()
     playerHeight = 50;
 
     playerX = 30;
-    playerY = 200;
+    playerY = 100;
 
     jumpForce = 5;
+    acc =.3;
 
     jumping = false;
 }
@@ -41,8 +50,15 @@ function build_config()
     ctx = canv.getContext("2d");
 }
 
+function fall()
+{
+    g += GRAVITATIONAL_FORCE + 0.01;
+    playerY += g * dt;
+}
+
 function update(progress)
 {
+    fall();
 }
 
 function render()
@@ -54,7 +70,8 @@ function render()
 
 function gameloop(currentTime)
 {
-    var progress = (currentTime- lastTime)/ONE_SECOND;
+    dt = currentTime- lastTime
+    var progress = dt/ONE_SECOND;
 
     update(progress);
     render();
@@ -73,7 +90,6 @@ function key_down(ev)
                 if(!jumping)
                 {
                     jumping = true;
-                    startHoldTime = Date.now();
                 }
             }
             break;
@@ -86,7 +102,6 @@ function key_up(ev)
     {
         case 38:
             {
-                stopHoldTime = Date.now();
             }
             break;
     }
