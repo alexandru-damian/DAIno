@@ -23,7 +23,7 @@ var ONE_SECOND = 1000;
 var GRAVITATIONAL_FORCE= .005;
 
 var GROUND_LEVEL_X = 0;
-var GROUND_LEVEL_Y = 200;
+var GROUND_LEVEL_Y = 220;
 
 function load_player()
 {
@@ -50,6 +50,15 @@ function build_config()
     ctx = canv.getContext("2d");
 }
 
+function collide()
+{
+    if(playerY > GROUND_LEVEL_Y)
+    {
+        g = 0;
+        playerY = GROUND_LEVEL_Y;
+    }
+}
+
 function fall()
 {
     g += GRAVITATIONAL_FORCE + 0.01;
@@ -59,6 +68,7 @@ function fall()
 function update(progress)
 {
     fall();
+    collide();
 }
 
 function render()
