@@ -61,17 +61,23 @@ function collide()
 function apply_gravity()
 {
     playerVel+= GRAVITATIONAL_ACC;
+}
+
+function update_player()
+{
     playerY += playerVel;
 }
 
 function update()
 {
-    jump();
     if(falling)
     {
         apply_gravity();
+        update_player();
+    }else
+    {
+        jump();
     }
-
     collide();
 }
 
