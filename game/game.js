@@ -1,4 +1,3 @@
-var lastTime = 0;
 var canv,ctx;
 
 var playerX = 0;
@@ -7,21 +6,14 @@ var playerY = 0;
 var playerHeight = 0;
 var playerWidth = 0;
 
-var jumpForce = 0;
+var playerVel= 0;
 
-var startHoldTime = 0;
-var stopHoldTime = 0;
+var jumpPressed = false;
+var falling = false;
 
-var dt = 0;
 
-var g = 0;
-
-var jumping = false;
-
-var MAX_FORCE = .6;
-var ONE_SECOND = 1000;
-
-var GRAVITATIONAL_FORCE= .005;
+var JUMP_ACC = 8;
+var GRAVITATIONAL_ACC= 0.3;
 
 var GROUND_LEVEL_X = 0;
 var GROUND_LEVEL_Y = 220;
@@ -32,10 +24,7 @@ function load_player()
     playerHeight = 50;
 
     playerX = 30;
-    playerY = 100;
-
-    jumpForce = MAX_FORCE;
-    jumping = false;
+    playerY = GROUND_LEVEL_Y;
 }
 
 function load_data()
@@ -51,10 +40,10 @@ function build_config()
 
 function jump()
 {
-    if(jumping)
+    if(jumpPressed && !falling)
     {
-        playerY -= jumpForce * dt;
-        jumpForce -= .02;
+        playerVel-= JUMP_ACC;
+        falling = true;
     }
 }
 
@@ -62,24 +51,26 @@ function collide()
 {
     if(playerY > GROUND_LEVEL_Y)
     {
-        g = 0;
-        playerY = GROUND_LEVEL_Y;
-
-        jumpForce = MAX_FORCE;
-        jumping = false;
+        playerVel= 0;
+        falling = false
+        playerY = GROUND_LEVEL_Y
     }
 }
 
-function fall()
+function apply_gravity()
 {
-    g += GRAVITATIONAL_FORCE + 0.01;
-    playerY += g * dt;
+    playerVel+= GRAVITATIONAL_ACC;
+    playerY += playerVel;
 }
 
-function update(progress)
+function update()
 {
+    if(falling)
+    {
+    apply_gravity();
+    }
+
     jump();
-    fall();
     collide();
 }
 
@@ -92,15 +83,11 @@ function render()
 
 }
 
-function gameloop(currentTime)
+function gameloop()
 {
-    dt = currentTime- lastTime
-    var progress = dt/ONE_SECOND;
 
-    update(progress);
+    update();
     render();
-
-    lastTime = currentTime;
 
     window.requestAnimationFrame(gameloop);
 }
@@ -111,10 +98,7 @@ function key_down(ev)
     {
         case 38:
             {
-                if(!jumping)
-                {
-                    jumping = true;
-                }
+                    jumpPressed = true;
             }
             break;
     }
@@ -126,6 +110,7 @@ function key_up(ev)
     {
         case 38:
             {
+                jumpPressed = false;
             }
             break;
     }
@@ -136,8 +121,8 @@ function generate_scene()
     build_config();
     load_data();
 
-    window.addEventListener("keydown", key_down, false);
-    window.addEventListener("keyup", key_up, false);
+    window.addEventListener("keydown", key_down);
+    window.addEventListener("keyup", key_up);
 
     window.requestAnimationFrame(gameloop);
 }
