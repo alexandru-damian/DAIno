@@ -83,7 +83,6 @@ function update()
 function render_ground()
 {
     ctx.moveTo(0,GROUND_LEVEL_Y+playerHeight);
-    ctx.lineWidth = 1;
 
     ctx.lineTo(canv.width,GROUND_LEVEL_Y+playerHeight);
     ctx.stroke();
