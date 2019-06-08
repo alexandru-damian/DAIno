@@ -52,8 +52,9 @@ function collide()
     if(playerY > GROUND_LEVEL_Y)
     {
         playerVel= 0;
-        falling = false
-        playerY = GROUND_LEVEL_Y
+        falling = false;
+
+        playerY = GROUND_LEVEL_Y;
     }
 }
 
@@ -65,12 +66,12 @@ function apply_gravity()
 
 function update()
 {
+    jump();
     if(falling)
     {
-    apply_gravity();
+        apply_gravity();
     }
 
-    jump();
     collide();
 }
 
@@ -79,40 +80,29 @@ function render()
     ctx.clearRect(0, 0, canv.width, canv.height);
 
     ctx.fillRect(playerX, playerY, playerWidth, playerHeight);
-    ctx.fillRect(0,GROUND_LEVEL_Y+playerHeight,canv.width,1)
+    ctx.fillRect(0,GROUND_LEVEL_Y+playerHeight,canv.width,1);
 
 }
 
 function gameloop()
 {
-
     update();
     render();
 
     window.requestAnimationFrame(gameloop);
 }
 
-function key_down(ev)
+function key_listener(ev)
 {
-    switch (ev.keyCode)
-    {
-        case 38:
-            {
-                    jumpPressed = true;
-            }
-            break;
-    }
-}
+    var keyState = (ev.type == 'keydown')?true:false
 
-function key_up(ev)
-{
-    switch (ev.keyCode)
+    switch(ev.keyCode)
     {
         case 38:
-            {
-                jumpPressed = false;
-            }
+        {
+            jumpPressed = keyState;
             break;
+        }
     }
 }
 
@@ -121,8 +111,8 @@ function generate_scene()
     build_config();
     load_data();
 
-    window.addEventListener("keydown", key_down);
-    window.addEventListener("keyup", key_up);
+    window.addEventListener("keydown", key_listener);
+    window.addEventListener("keyup", key_listener);
 
     window.requestAnimationFrame(gameloop);
 }
