@@ -11,7 +11,6 @@ var playerVel= 0;
 var jumpPressed = false;
 var falling = false;
 
-
 var JUMP_ACC = 8;
 var GRAVITATIONAL_ACC= 0.3;
 
@@ -81,13 +80,21 @@ function update()
     collide();
 }
 
+function render_ground()
+{
+    ctx.moveTo(0,GROUND_LEVEL_Y+playerHeight);
+    ctx.lineWidth = 1;
+
+    ctx.lineTo(canv.width,GROUND_LEVEL_Y+playerHeight);
+    ctx.stroke();
+}
+
 function render()
 {
     ctx.clearRect(0, 0, canv.width, canv.height);
-
     ctx.fillRect(playerX, playerY, playerWidth, playerHeight);
-    ctx.fillRect(0,GROUND_LEVEL_Y+playerHeight,canv.width,1);
 
+    render_ground();
 }
 
 function gameloop()
