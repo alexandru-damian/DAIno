@@ -7,6 +7,7 @@ var playerHeight = 0;
 var playerWidth = 0;
 
 var playerVel= 0;
+var enemyVel = -10;
 
 var jumpPressed = false;
 var falling = false;
@@ -15,7 +16,7 @@ var JUMP_ACC = 8;
 var GRAVITATIONAL_ACC= 0.3;
 
 var GROUND_LEVEL_X = 0;
-var GROUND_LEVEL_Y = 220;
+var GROUND_LEVEL_Y = 280;
 
 function load_player()
 {
@@ -77,22 +78,24 @@ function update()
     {
         jump();
     }
+    Enemy.update_enemies();
     collide();
 }
 
 function render_ground()
 {
-    ctx.moveTo(0,GROUND_LEVEL_Y+playerHeight);
+    ctx.moveTo(0,GROUND_LEVEL_Y);
 
-    ctx.lineTo(canv.width,GROUND_LEVEL_Y+playerHeight);
+    ctx.lineTo(canv.width,GROUND_LEVEL_Y);
     ctx.stroke();
 }
 
 function render()
 {
     ctx.clearRect(0, 0, canv.width, canv.height);
-    ctx.fillRect(playerX, playerY, playerWidth, playerHeight);
+    ctx.fillRect(playerX, playerY- playerHeight, playerWidth, playerHeight);
 
+    Enemy.render_enemies();
     render_ground();
 }
 
@@ -122,6 +125,11 @@ function generate_scene()
 {
     build_config();
     load_data();
+
+    Enemy.add_enemy();
+    Enemy.add_enemy();
+
+    console.log(Enemy.enemies);
 
     window.addEventListener("keydown", key_listener);
     window.addEventListener("keyup", key_listener);
