@@ -12,8 +12,8 @@ var enemyVel = -10;
 var jumpPressed = false;
 var falling = false;
 
-var JUMP_ACC = 8;
-var GRAVITATIONAL_ACC= 0.3;
+var JUMP_ACC = 15;
+var GRAVITATIONAL_ACC= 0.9;
 
 var GROUND_LEVEL_X = 0;
 var GROUND_LEVEL_Y = 280;
@@ -125,11 +125,6 @@ function generate_scene()
 {
     build_config();
     load_data();
-
-    Enemy.add_enemy();
-    Enemy.add_enemy();
-
-    console.log(Enemy.enemies);
 
     window.addEventListener("keydown", key_listener);
     window.addEventListener("keyup", key_listener);
