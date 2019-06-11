@@ -39,6 +39,12 @@ var Enemy =
         this.enemies.push(enemy);
     },
 
+    remove_enemy:function()
+    {
+        //TO DO:This is might be very slow!!!
+        this.enemies.shift();
+    },
+
     update_enemies:function ()
     {
         this.enemies.forEach( function(element) {
