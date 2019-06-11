@@ -50,6 +50,9 @@ var Enemy =
         this.enemies.forEach( function(element) {
             element.x += enemyVel;
         });
+
+        if(this.enemies.length > 0 && this.enemies[0].x + this.enemies[0].width < 0)
+            this.remove_enemy();
     },
 
 };

@@ -18,6 +18,11 @@ var GRAVITATIONAL_ACC= 0.9;
 var GROUND_LEVEL_X = 0;
 var GROUND_LEVEL_Y = 280;
 
+var MIN_NEXT_ENEMY_FRAME = 40;
+var MAX_NEXT_ENEMY_FRAME = 120;
+
+var nextEnemyFrames = 0
+
 function load_player()
 {
     playerWidth = 30;
@@ -78,6 +83,16 @@ function update()
     {
         jump();
     }
+    if(!nextEnemyFrames)
+    {
+        Enemy.add_enemy();
+        nextEnemyFrames = random(MIN_NEXT_ENEMY_FRAME ,MAX_NEXT_ENEMY_FRAME)
+    }
+    else
+    {
+        nextEnemyFrames --;
+    }
+
     Enemy.update_enemies();
     collide();
 }
