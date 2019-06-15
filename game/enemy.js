@@ -53,6 +53,6 @@ var Enemy =
 
         if(this.enemies.length > 0 && this.enemies[0].x + this.enemies[0].width < 0)
             this.remove_enemy();
-    },
+    }
 
 };

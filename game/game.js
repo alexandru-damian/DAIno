@@ -7,7 +7,7 @@ var playerHeight = 0;
 var playerWidth = 0;
 
 var playerVel= 0;
-var enemyVel = -10;
+var enemyVel = -6;
 
 var jumpPressed = false;
 var falling = false;
@@ -18,10 +18,10 @@ var GRAVITATIONAL_ACC= 0.9;
 var GROUND_LEVEL_X = 0;
 var GROUND_LEVEL_Y = 280;
 
-var MIN_NEXT_ENEMY_FRAME = 40;
-var MAX_NEXT_ENEMY_FRAME = 120;
+var MIN_NEXT_ENEMY_FRAME = 70;
+var MAX_NEXT_ENEMY_FRAME = 70;
 
-var nextEnemyFrames = 0
+var nextEnemyFrames = 0;
 
 function load_player()
 {
@@ -52,6 +52,15 @@ function jump()
     }
 }
 
+function has_collided(enemy)
+{
+    if((playerY < enemy.y && playerY - playerHeight < enemy.y) ||(playerY > enemy.y + enemy.height && playerY - playerHeight > enemy.y + enemy.height))
+        return false;
+    if((playerX < enemy.x && playerX + playerWidth < enemy.x) ||(playerX> enemy.x + enemy.width && playerX + playerWidth > enemy.x + enemy.width))
+        return false;
+    return true;
+}
+
 function collide()
 {
     if(playerY > GROUND_LEVEL_Y)
@@ -61,6 +70,12 @@ function collide()
 
         playerY = GROUND_LEVEL_Y;
     }
+    
+    let enemy = Enemy.enemies[0];
+    
+    if(Enemy.enemies.length > 0 && has_collided(enemy))
+        location.reload();
+        
 }
 
 function apply_gravity()
