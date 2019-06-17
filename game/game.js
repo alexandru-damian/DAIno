@@ -35,11 +35,16 @@ function load_player()
 
     playerX = 30;
     playerY = GROUND_LEVEL_Y;
+
+    currentScore = 0;
+    enemyVel = Enemy.MAX_VELOCITY
 }
 
-function load_data()
+function reset_data()
 {
     load_player();
+    if(Enemy.enemies.length > 0)
+        Enemy.enemies = []
 }
 
 function build_config()
@@ -112,7 +117,7 @@ function collide()
     let enemy = Enemy.enemies[0];
     
     if(Enemy.enemies.length > 0 && has_collided(enemy))
-        location.reload();
+        reset_data();
         
 }
 
@@ -205,7 +210,7 @@ function mouse_up()
 function generate_scene()
 {
     build_config();
-    load_data();
+    reset_data();
 
     window.addEventListener("keydown", key_listener);
     window.addEventListener("keyup", key_listener);

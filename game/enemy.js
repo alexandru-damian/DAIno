@@ -44,7 +44,7 @@ var Enemy =
 
     remove_enemy:function()
     {
-        //TO DO:This is might be very slow!!!
+        //TO DO:This might be very slow!!!
         this.enemies.shift();
     },
 
