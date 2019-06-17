@@ -25,7 +25,8 @@ var minNextEnemyFrames = 0;
 var maxNextEnemyFrames = 0;
 
 var nextEnemyFrames = 0;
-var hMin = 0;
+
+var currentScore = 0;
 
 function load_player()
 {
@@ -57,10 +58,20 @@ This was precalculated for less computing power.
     return ((0.25 * velocity) + 4.75);
 }
 
+function render_score()
+{
+    ctx.font = "26px Arial";
+    ctx.fillText("Score:"+currentScore.toString(), 550,30)
+}
+
+function update_score()
+{
+    currentScore ++;
+}
+
 function update_next_frames()
 {
     let enemyDelayFramesCoeff = calculate_delay_coeff(enemyVel);
-    console.log('d',enemyDelayFramesCoeff)
     let enemyMultiplierSpaceCoeff = 2;
 
     if(enemyVel < 0)
@@ -117,6 +128,7 @@ function update_player()
 
 function update()
 {
+    update_score();
     update_next_frames();
     if(falling)
     {
@@ -153,6 +165,7 @@ function render()
     ctx.clearRect(0, 0, canv.width, canv.height);
     ctx.fillRect(playerX, playerY- playerHeight, playerWidth, playerHeight);
 
+    render_score();
     Enemy.render_enemies();
     render_ground();
 }
