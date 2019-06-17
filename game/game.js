@@ -18,8 +18,8 @@ var GRAVITATIONAL_ACC= 0.9;
 var GROUND_LEVEL_X = 0;
 var GROUND_LEVEL_Y = 280;
 
-var MIN_NEXT_ENEMY_FRAME = 70;
-var MAX_NEXT_ENEMY_FRAME = 70;
+var minNextEnemyFrames = 0;
+var maxNextEnemyFrames = 0;
 
 var nextEnemyFrames = 0;
 
@@ -41,6 +41,18 @@ function build_config()
 {
     canv = document.getElementById("game");
     ctx = canv.getContext("2d");
+}
+
+function update_next_frames()
+{
+    let playerMultiplierJumpCoeff = 4;
+    let enemyMultiplierJumpCoeff = 3;
+
+    if(enemyVel < 0)
+        {
+            minNextEnemyFrames = Math.floor((playerX + playerMultiplierJumpCoeff * playerWidth + Enemy.MAX_WIDTH)/-(enemyVel))
+            maxNextEnemyFrames = minNextEnemyFrames;
+        }
 }
 
 function jump()
@@ -90,6 +102,7 @@ function update_player()
 
 function update()
 {
+    update_next_frames();
     if(falling)
     {
         apply_gravity();
@@ -101,7 +114,7 @@ function update()
     if(!nextEnemyFrames)
     {
         Enemy.add_enemy();
-        nextEnemyFrames = random(MIN_NEXT_ENEMY_FRAME ,MAX_NEXT_ENEMY_FRAME)
+        nextEnemyFrames = random(minNextEnemyFrames ,maxNextEnemyFrames)
     }
     else
     {
