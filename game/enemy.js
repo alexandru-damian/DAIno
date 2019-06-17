@@ -14,7 +14,10 @@ var Enemy =
     MAX_WIDTH:80,
 
     MIN_HEIGHT:30,
-    MAX_HEIGHT:60,
+    MAX_HEIGHT:50,
+
+    MAX_VELOCITY:-7,
+    MIN_VELOCIT:-15,
 
     enemies_keys:["cactus"],
     enemies:[],

@@ -7,13 +7,16 @@ var playerHeight = 0;
 var playerWidth = 0;
 
 var playerVel= 0;
-var enemyVel = -6;
+var enemyVel = -10;
 
 var jumpPressed = false;
 var falling = false;
 
+var MAX_COEFF_DELAY_ENEMY_FRAMES = 3;
+var MIN_COEFF_DELAY_ENEMY_FRAMES = 1;
+
 var JUMP_ACC = 15;
-var GRAVITATIONAL_ACC= 0.9;
+var GRAVITATIONAL_ACC= 1;
 
 var GROUND_LEVEL_X = 0;
 var GROUND_LEVEL_Y = 280;
@@ -22,6 +25,7 @@ var minNextEnemyFrames = 0;
 var maxNextEnemyFrames = 0;
 
 var nextEnemyFrames = 0;
+var hMin = 0;
 
 function load_player()
 {
@@ -43,15 +47,26 @@ function build_config()
     ctx = canv.getContext("2d");
 }
 
+function calculate_delay_coeff(velocity)
+{
+/*
+Based the on the enemy bounderies velocity and the coefficient delay bounderies we get the following function
+f(x)= 0.25x + 4.75
+This was precalculated for less computing power.
+*/
+    return ((0.25 * velocity) + 4.75);
+}
+
 function update_next_frames()
 {
-    let playerMultiplierJumpCoeff = 4;
-    let enemyMultiplierJumpCoeff = 3;
+    let enemyDelayFramesCoeff = calculate_delay_coeff(enemyVel);
+    console.log('d',enemyDelayFramesCoeff)
+    let enemyMultiplierSpaceCoeff = 2;
 
     if(enemyVel < 0)
         {
-            minNextEnemyFrames = Math.floor((playerX + playerMultiplierJumpCoeff * playerWidth + Enemy.MAX_WIDTH)/-(enemyVel))
-            maxNextEnemyFrames = minNextEnemyFrames;
+            minNextEnemyFrames = Math.floor(((canv.width - playerX - playerWidth - Enemy.MAX_WIDTH)/(-enemyVel))/enemyDelayFramesCoeff);
+            maxNextEnemyFrames = enemyMultiplierSpaceCoeff * minNextEnemyFrames;
         }
 }
 
