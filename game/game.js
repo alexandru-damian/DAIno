@@ -192,6 +192,16 @@ function key_listener(ev)
     }
 }
 
+function mouse_down()
+{
+    jumpPressed = true
+}
+
+function mouse_up()
+{
+    jumpPressed = false
+}
+
 function generate_scene()
 {
     build_config();
