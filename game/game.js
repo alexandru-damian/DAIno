@@ -77,7 +77,7 @@ function update_score()
 function update_next_frames()
 {
     let enemyDelayFramesCoeff = calculate_delay_coeff(enemyVel);
-    let enemyMultiplierSpaceCoeff = 2;
+    let enemyMultiplierSpaceCoeff = enemyDelayFramesCoeff;
 
     if(enemyVel < 0)
         {
@@ -97,9 +97,16 @@ function jump()
 
 function has_collided(enemy)
 {
-    if((playerY < enemy.y && playerY - playerHeight < enemy.y) ||(playerY > enemy.y + enemy.height && playerY - playerHeight > enemy.y + enemy.height))
+    if(playerX < enemy.x && playerX + playerWidth < enemy.x)
         return false;
-    if((playerX < enemy.x && playerX + playerWidth < enemy.x) ||(playerX> enemy.x + enemy.width && playerX + playerWidth > enemy.x + enemy.width))
+    
+    if(playerY < enemy.y && playerY - playerHeight < enemy.y)
+        return false;
+    
+    if(playerX> enemy.x + enemy.width && playerX + playerWidth > enemy.x + enemy.width)
+        return false;
+    
+    if(playerY > enemy.y + enemy.height && playerY - playerHeight > enemy.y + enemy.height)
         return false;
     return true;
 }
