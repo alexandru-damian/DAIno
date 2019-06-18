@@ -25,8 +25,7 @@ var minNextEnemyFrames = 0;
 var maxNextEnemyFrames = 0;
 
 var nextEnemyFrames = 0;
-
-var currentScore = 0;
+var currentScore;
 
 function load_player()
 {
@@ -38,6 +37,8 @@ function load_player()
 
     currentScore = 0;
     enemyVel = Enemy.MAX_VELOCITY
+
+    checkpointReached = true;
 }
 
 function reset_data()
@@ -57,16 +58,16 @@ function calculate_delay_coeff(velocity)
 {
 /*
 Based the on the enemy bounderies velocity and the coefficient delay bounderies we get the following function
-f(x)= 0.25x + 4.75
+f(x)= 0.2x + 4.4
 This was precalculated for less computing power.
 */
-    return ((0.25 * velocity) + 4.75);
+    return ((0.2 * velocity) + 4.4);
 }
 
 function render_score()
 {
     ctx.font = "26px Arial";
-    ctx.fillText("Score:"+currentScore.toString(), 550,30)
+    ctx.fillText("Score:"+Math.floor(currentScore).toString(), 550,30)
 }
 
 function update_score()
@@ -76,13 +77,16 @@ function update_score()
 
 function update_next_frames()
 {
-    let enemyDelayFramesCoeff = calculate_delay_coeff(enemyVel);
-    let enemyMultiplierSpaceCoeff = enemyDelayFramesCoeff;
 
-    if(enemyVel < 0)
+        if(enemyVel > Enemy.MIN_VELOCITY)
         {
+            let enemyDelayFramesCoeff = calculate_delay_coeff(enemyVel);
+            let enemyMultiplierSpaceCoeff = 2;
+
             minNextEnemyFrames = Math.floor(((canv.width - playerX - playerWidth - Enemy.MAX_WIDTH)/(-enemyVel))/enemyDelayFramesCoeff);
             maxNextEnemyFrames = enemyMultiplierSpaceCoeff * minNextEnemyFrames;
+
+            console.log('ev',enemyVel);
         }
 }
 
