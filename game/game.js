@@ -26,6 +26,10 @@ var maxNextEnemyFrames = 0;
 
 var nextEnemyFrames = 0;
 var currentScore;
+var lastTime;
+
+var FPS = 60
+var INTERVAL = 1000/FPS
 
 function load_player()
 {
@@ -85,8 +89,6 @@ function update_next_frames()
 
             minNextEnemyFrames = Math.floor(((canv.width - playerX - playerWidth - Enemy.MAX_WIDTH)/(-enemyVel))/enemyDelayFramesCoeff);
             maxNextEnemyFrames = enemyMultiplierSpaceCoeff * minNextEnemyFrames;
-
-            console.log('ev',enemyVel);
         }
 }
 
@@ -127,8 +129,8 @@ function collide()
     
     let enemy = Enemy.enemies[0];
     
-    if(Enemy.enemies.length > 0 && has_collided(enemy))
-        reset_data();
+    //if(Enemy.enemies.length > 0 && has_collided(enemy))
+        //reset_data();
         
 }
 
@@ -186,10 +188,22 @@ function render()
     render_ground();
 }
 
-function gameloop()
+function gameloop(currentTime)
 {
+    currentTime = Date.now()
+    delta = currentTime - lastTime
+
+    console.log('ct',currentTime)
+    console.log('lt',lastTime)
+    console.log('delta',delta)
+
     update();
-    render();
+
+    if(delta > INTERVAL)
+    {
+        render();
+        lastTime = currentTime - (delta % INTERVAL)
+    }
 
     window.requestAnimationFrame(gameloop);
 }
@@ -226,6 +240,7 @@ function generate_scene()
     window.addEventListener("keydown", key_listener);
     window.addEventListener("keyup", key_listener);
 
+    lastTime = Date.now();
     window.requestAnimationFrame(gameloop);
 }
 
