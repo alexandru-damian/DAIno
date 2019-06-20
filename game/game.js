@@ -26,6 +26,8 @@ var maxNextEnemyFrames = 0;
 
 var nextEnemyFrames = 0;
 var currentScore;
+
+var remainingTime = 0;
 var lastTime;
 
 var FPS = 60
@@ -129,8 +131,8 @@ function collide()
     
     let enemy = Enemy.enemies[0];
     
-    //if(Enemy.enemies.length > 0 && has_collided(enemy))
-        //reset_data();
+    if(Enemy.enemies.length > 0 && has_collided(enemy))
+        reset_data();
         
 }
 
@@ -170,14 +172,6 @@ function update()
     collide();
 }
 
-function render_ground()
-{
-    ctx.moveTo(0,GROUND_LEVEL_Y);
-
-    ctx.lineTo(canv.width,GROUND_LEVEL_Y);
-    ctx.stroke();
-}
-
 function render()
 {
     ctx.clearRect(0, 0, canv.width, canv.height);
@@ -185,25 +179,25 @@ function render()
 
     render_score();
     Enemy.render_enemies();
-    render_ground();
 }
 
-function gameloop(currentTime)
+function gameloop()
 {
-    currentTime = Date.now()
-    delta = currentTime - lastTime
-
-    console.log('ct',currentTime)
-    console.log('lt',lastTime)
-    console.log('delta',delta)
-
-    update();
-
-    if(delta > INTERVAL)
+    currentTime = Date.now();
+    delta = currentTime - lastTime;
+    
+    remainingTime +=delta;
+    
+    console.log('FPS:',Math.floor(1000/delta));
+    
+    if(remainingTime > INTERVAL)
     {
-        render();
-        lastTime = currentTime - (delta % INTERVAL)
+        update();
+        remainingTime = remainingTime - INTERVAL;
     }
+    
+    render();
+    lastTime = currentTime
 
     window.requestAnimationFrame(gameloop);
 }
