@@ -188,7 +188,7 @@ function gameloop()
     
     remainingTime +=delta;
     
-    console.log('FPS:',Math.floor(1000/delta));
+    console.log('FPS:',(1000/delta).toFixed(0));
     
     if(remainingTime > INTERVAL)
     {
@@ -216,12 +216,12 @@ function key_listener(ev)
     }
 }
 
-function mouse_down()
+function mouse_down(ev)
 {
     jumpPressed = true
 }
 
-function mouse_up()
+function mouse_up(ev)
 {
     jumpPressed = false
 }
@@ -233,7 +233,10 @@ function generate_scene()
 
     window.addEventListener("keydown", key_listener);
     window.addEventListener("keyup", key_listener);
-
+    
+    window.addEventListener("mousedown",mouse_down);
+    window.addEventListener("mouseup",mouse_up);
+    
     lastTime = Date.now();
     window.requestAnimationFrame(gameloop);
 }
