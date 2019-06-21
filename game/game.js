@@ -237,6 +237,9 @@ function generate_scene()
     window.addEventListener("mousedown",mouse_down);
     window.addEventListener("mouseup",mouse_up);
     
+    window.addEventListener("touchstart",mouse_down);
+    window.addEventListener("touchend",mouse_up)
+
     lastTime = Date.now();
     window.requestAnimationFrame(gameloop);
 }
