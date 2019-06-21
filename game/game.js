@@ -52,6 +52,8 @@ function reset_data()
     load_player();
     if(Enemy.enemies.length > 0)
         Enemy.enemies = []
+
+    set_seed(0);
 }
 
 function build_config()
