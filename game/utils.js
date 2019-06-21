@@ -3,7 +3,7 @@ const MAX_NUMBER = 2147483648
 
 function normalize(x,x_min,x_max,new_x_min,new_x_max)
 {
-    return ((x-x_min)*(new_x_max-new_x_min)/(x_max-x_min));
+    return ((x-x_min)*(new_x_max-new_x_min)/(x_max-x_min))+new_x_min;
 }
 
 function get_new_seed()
