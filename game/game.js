@@ -25,6 +25,8 @@ var minNextEnemyFrames = 0;
 var maxNextEnemyFrames = 0;
 
 var nextEnemyFrames = 0;
+
+var highScore = 0;
 var currentScore;
 
 var remainingTime = 0;
@@ -47,8 +49,24 @@ function load_player()
     checkpointReached = true;
 }
 
+function update_highscore()
+{
+    if(highScore < currentScore)
+        highScore = currentScore
+}
+
+function render_highscore()
+{
+    ctx.clearRect(550, 30, canv.width, 60);
+    ctx.font = "26px Arial";
+    ctx.fillText("High:"+Math.floor(highScore).toString(), 550,60)
+}
+
 function reset_data()
 {
+    update_highscore();
+    render_highscore();
+
     load_player();
     if(Enemy.enemies.length > 0)
         Enemy.enemies = []
@@ -74,6 +92,7 @@ This was precalculated for less computing power.
 
 function render_score()
 {
+    ctx.clearRect(550, 0, canv.width, 30);
     ctx.font = "26px Arial";
     ctx.fillText("Score:"+Math.floor(currentScore).toString(), 550,30)
 }
@@ -176,7 +195,7 @@ function update()
 
 function render()
 {
-    ctx.clearRect(0, 0, canv.width, canv.height);
+    ctx.clearRect(0, 90, canv.width, canv.height);
     ctx.fillRect(playerX, playerY- playerHeight, playerWidth, playerHeight);
 
     render_score();
