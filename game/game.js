@@ -223,28 +223,9 @@ function gameloop()
     window.requestAnimationFrame(gameloop);
 }
 
-function key_listener(ev)
+function controller_listener(ev)
 {
-    var keyState = (ev.type == 'keydown')?true:false
-
-    switch(ev.keyCode)
-    {
-        case 38:
-        {
-            jumpPressed = keyState;
-            break;
-        }
-    }
-}
-
-function mouse_down(ev)
-{
-    jumpPressed = true
-}
-
-function mouse_up(ev)
-{
-    jumpPressed = false
+    jumpPressed = (ev.type == 'keydown' || ev.type == 'mousedown')?true:false
 }
 
 function generate_scene()
@@ -252,14 +233,14 @@ function generate_scene()
     build_config();
     reset_data();
 
-    window.addEventListener("keydown", key_listener);
-    window.addEventListener("keyup", key_listener);
+    window.addEventListener("keydown", controller_listener);
+    window.addEventListener("keyup", controller_listener);
     
-    window.addEventListener("mousedown",mouse_down);
-    window.addEventListener("mouseup",mouse_up);
+    window.addEventListener("mousedown",controller_listener);
+    window.addEventListener("mouseup",controller_listener);
     
-    window.addEventListener("touchstart",mouse_down);
-    window.addEventListener("touchend",mouse_up)
+    window.addEventListener("touchstart",controller_listener);
+    window.addEventListener("touchend",controller_listener)
 
     lastTime = Date.now();
     window.requestAnimationFrame(gameloop);
