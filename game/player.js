@@ -1,33 +1,82 @@
-class Player {
+class Player
+{
 
-    #y_velocity = 0
-    #Y_ACCELERATION = -15
+    #y_velocity = 0;
+    #Y_ACCELERATION = 15;
 
-    #isFalling = false
-    #jumpPressed = false 
+    #Y_GRAVITATIONAL_ACCELERATION = 1;
 
-  constructor(x, y, width, height) {
-    this.x = x;
-    this.y = y;
+    #isFalling = false;
 
-    this.width = width;
-    this.height = height;
-  }
+    constructor(x, y, width, height) 
+    {
+      this.x = x;
+      this.y = y;   
 
-  get isFalling()
-  {
-    return this.#isFalling;
-  }
+      this.width = width;
+      this.height = height;
+    }
 
-  set jumpPressed(jumpPressed)
-  {
-    this.#jumpPressed = jumpPressed;
-  }
+    _jump()
+    {
+        //TO DO Decouple commands from game objects
+        if(jumpPressed && !this.#isFalling)
+        {
+            this.#y_velocity -= this.#Y_ACCELERATION;
+            this.#isFalling = true;
+        }
+    }
 
-  get jumpPressed()
-  {
-    return this.#jumpPressed
-  }
+    _apply_gravity()
+    {
+        this.#y_velocity += this.#Y_GRAVITATIONAL_ACCELERATION;
+    }
+
+    _update_position()
+    {
+        this.y += this.#y_velocity;
+    }
+
+    hit(gameObject)
+    {
+        if(this.x < gameObject.x && this.x + this.width < gameObject.x)
+            return false;
+        
+        if(this.y < gameObject.y && this.y - this.height < gameObject.y)
+            return false;
+        
+        if(this.x> gameObject.x + gameObject.width && this.x + this.width > gameObject.x + gameObject.width)
+            return false;
+        
+        if(this.y > gameObject.y + gameObject.height && this.y - this.height > gameObject.y + gameObject.height)
+            return false;
+        return true;
+    }
+
+    update()
+    {
+        if(this.#isFalling)
+        {
+            this._apply_gravity();
+            this._update_position();
+        }
+        else
+        {
+            this._jump();
+        }
+    }
+
+    stay_on_ground(newY)
+    {
+        this.#y_velocity= 0;
+        this.#isFalling = false;
+
+        this.y = newY;
+    }
+
+    render()
+    {
+        ctx.fillRect(this.x, this.y- this.height, this.width, this.height);
+    }
 
 }
-

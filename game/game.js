@@ -1,11 +1,5 @@
 var canv,ctx;
 
-var playerX = 0;
-var playerY = 0;
-
-var playerHeight = 0;
-var playerWidth = 0;
-
 var playerVel= 0;
 var enemyVel = -10;
 
@@ -14,9 +8,6 @@ var falling = false;
 
 var MAX_COEFF_DELAY_ENEMY_FRAMES = 3;
 var MIN_COEFF_DELAY_ENEMY_FRAMES = 1;
-
-var JUMP_ACC = 15;
-var GRAVITATIONAL_ACC= 1;
 
 var GROUND_LEVEL_X = 0;
 var GROUND_LEVEL_Y = 280;
@@ -35,13 +26,17 @@ var lastTime;
 var FPS = 60
 var INTERVAL = 1000/FPS
 
+let player;
+
 function load_player()
 {
-    playerWidth = 30;
-    playerHeight = 50;
+    let playerWidth = 30;
+    let playerHeight = 50;
 
-    playerX = 30;
-    playerY = GROUND_LEVEL_Y;
+    let playerX = 30;
+    let playerY = GROUND_LEVEL_Y;
+
+    player = new Player(playerX, playerY, playerWidth, playerHeight);
 
     currentScore = 0;
     enemyVel = Enemy.MAX_VELOCITY
@@ -110,75 +105,28 @@ function update_next_frames()
             let enemyDelayFramesCoeff = calculate_delay_coeff(enemyVel);
             let enemyMultiplierSpaceCoeff = 2;
 
-            minNextEnemyFrames = Math.floor(((canv.width - playerX - playerWidth - Enemy.MAX_WIDTH)/(-enemyVel))/enemyDelayFramesCoeff);
+            minNextEnemyFrames = Math.floor(((canv.width - player.x - player.width - Enemy.MAX_WIDTH)/(-enemyVel))/enemyDelayFramesCoeff);
             maxNextEnemyFrames = enemyMultiplierSpaceCoeff * minNextEnemyFrames;
         }
 }
 
-function jump()
-{
-    if(jumpPressed && !falling)
-    {
-        playerVel-= JUMP_ACC;
-        falling = true;
-    }
-}
-
-function has_collided(enemy)
-{
-    if(playerX < enemy.x && playerX + playerWidth < enemy.x)
-        return false;
-    
-    if(playerY < enemy.y && playerY - playerHeight < enemy.y)
-        return false;
-    
-    if(playerX> enemy.x + enemy.width && playerX + playerWidth > enemy.x + enemy.width)
-        return false;
-    
-    if(playerY > enemy.y + enemy.height && playerY - playerHeight > enemy.y + enemy.height)
-        return false;
-    return true;
-}
-
 function collide()
 {
-    if(playerY > GROUND_LEVEL_Y)
-    {
-        playerVel= 0;
-        falling = false;
-
-        playerY = GROUND_LEVEL_Y;
-    }
+    if(player.y > GROUND_LEVEL_Y)
+        player.stay_on_ground(GROUND_LEVEL_Y)
     
     let enemy = Enemy.enemies[0];
     
-    if(Enemy.enemies.length > 0 && has_collided(enemy))
+    if(Enemy.enemies.length > 0 && player.hit(enemy))
         reset_data();
         
-}
-
-function apply_gravity()
-{
-    playerVel+= GRAVITATIONAL_ACC;
-}
-
-function update_player()
-{
-    playerY += playerVel;
 }
 
 function update()
 {
     update_score();
     update_next_frames();
-    if(falling)
-    {
-        apply_gravity();
-        update_player();
-    }else
-    {
-        jump();
-    }
+    player.update();
     if(!nextEnemyFrames)
     {
         Enemy.add_enemy();
@@ -196,7 +144,7 @@ function update()
 function render()
 {
     ctx.clearRect(0, 90, canv.width, canv.height);
-    ctx.fillRect(playerX, playerY- playerHeight, playerWidth, playerHeight);
+    player.render()
 
     render_score();
     Enemy.render_enemies();
