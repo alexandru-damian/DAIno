@@ -1,8 +1,24 @@
 {
-    "records" : 
-    [
-        {"frame": 150, "action" : "jump"},
-        {"frame": 190, "action" : "jump"},
-        {"frame": 340, "action" : "jump"}
-    ]
+  "records": [
+    {
+      "frame": 150,
+      "action": "jump"
+    },
+    {
+      "frame": 190,
+      "action": "jump"
+    },
+    {
+      "frame": 340,
+      "action": "jump"
+    },
+    {
+      "frame": 1560,
+      "action": "jump"
+    },
+    {
+      "frame": 2600,
+      "action": "jump"
+    }
+  ]
 }
