@@ -1,10 +1,7 @@
 var canv,ctx;
-
-var playerVel= 0;
 var enemyVel = -10;
 
 var jumpPressed = false;
-var falling = false;
 
 var MAX_COEFF_DELAY_ENEMY_FRAMES = 3;
 var MIN_COEFF_DELAY_ENEMY_FRAMES = 1;
@@ -27,6 +24,7 @@ var FPS = 60
 var INTERVAL = 1000/FPS
 
 let player;
+let running;
 
 function load_player()
 {
@@ -73,6 +71,8 @@ function build_config()
 {
     canv = document.getElementById("game");
     ctx = canv.getContext("2d");
+
+    running = true;
 }
 
 function calculate_delay_coeff(velocity)
@@ -110,6 +110,12 @@ function update_next_frames()
         }
 }
 
+function end_game()
+{
+    running = false;
+    document.getElementById('start').disabled = false;
+}
+
 function collide()
 {
     if(player.y > GROUND_LEVEL_Y)
@@ -118,8 +124,7 @@ function collide()
     let enemy = Enemy.enemies[0];
     
     if(Enemy.enemies.length > 0 && player.hit(enemy))
-        reset_data();
-        
+        end_game()
 }
 
 function update()
@@ -168,6 +173,7 @@ function gameloop()
     render();
     lastTime = currentTime
 
+    if(running)
     window.requestAnimationFrame(gameloop);
 }
 
@@ -176,8 +182,10 @@ function controller_listener(ev)
     jumpPressed = (ev.type == 'keydown' || ev.type == 'mousedown')?true:false
 }
 
-function generate_scene()
+function start_game()
 {
+    document.getElementById('start').disabled = true
+
     build_config();
     reset_data();
 
