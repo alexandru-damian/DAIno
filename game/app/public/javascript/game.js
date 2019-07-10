@@ -182,13 +182,18 @@ function controller_listener(ev)
     jumpPressed = (ev.type == 'keydown' || ev.type == 'mousedown')?true:false
 }
 
+function test()
+{
+
+}
+
 function start_game()
 {
     document.getElementById('start').disabled = true
 
     build_config();
     reset_data();
-
+    
     window.addEventListener("keydown", controller_listener);
     window.addEventListener("keyup", controller_listener);
     
