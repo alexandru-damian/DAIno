@@ -1,7 +1,7 @@
 .button
 {
     border: none;
-    font-size: 20px;
+    font-size: 25px;
 }
 
 input[type=button]:enabled
@@ -17,5 +17,21 @@ input[type=button]:disabled
     .button;
     background-color: #CCC
     color : #777;
-    cursor: none;
+}
+
+.checkbox
+{
+    position: relative;
+    background-color: white;
+    width: 25px;
+    height: 25px;
+    top: 7px;
+}
+
+.label
+{
+    display: block;
+    padding-left: 10px;
+    font-size: 25px;
+    color:white;
 }

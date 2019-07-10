@@ -12,8 +12,13 @@
         <div align="center" style="position: relative; top: 300px">
             <canvas id="game" width="800" height="280" style="background-color:#EEE"></canvas>
             <script src="game.js"></script>
-            <div align="center">
-                <input id="start" class="button" type="button" name="Start" onclick="start_game()" value="Start">
+            <div>
+                <input id="start" class="button" type="button" onclick="start_game()" value="Start">
+            </div>
+            <div style="position: absolute; left:28%">
+                <label class="label"> Recording  
+                    <input class="checkbox" id="recording" type="checkbox" value="Recording">
+                </label>
             </div>
         </div>
     </body>
