@@ -1,0 +1,21 @@
+.button
+{
+    border: none;
+    font-size: 20px;
+}
+
+input[type=button]:enabled
+{
+    .button;
+    background-color: #FFF;
+    color :#000;
+    cursor: pointer;
+}
+
+input[type=button]:disabled
+{
+    .button;
+    background-color: #CCC
+    color : #777;
+    cursor: none;
+}
