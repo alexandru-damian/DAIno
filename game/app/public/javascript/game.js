@@ -184,11 +184,18 @@ function controller_listener(ev)
 
 function test()
 {
+   var data = {name:"John", age:31, city:"Tokyo"};
+
+    json_post(data,function(data) {
+                             console.log('TADAM');
+                             console.log(JSON.stringify(data));})
 
 }
 
 function start_game()
 {
+    //Enable to post request
+    //test()
     document.getElementById('start').disabled = true
 
     build_config();

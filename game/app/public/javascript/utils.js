@@ -33,3 +33,14 @@ function random(min,max)
     return Math.floor((max - min +1)*rand())+min
 }
 
+function json_post(data, callback)
+{
+     $.ajax({
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        url: '/save-record',                      
+        success: callback
+    });
+}
+
