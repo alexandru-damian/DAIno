@@ -38,8 +38,6 @@ function load_player()
 
     currentScore = 0;
     enemyVel = Enemy.MAX_VELOCITY
-
-    checkpointReached = true;
 }
 
 function update_highscore()
