@@ -1,12 +1,15 @@
 'use strict';
 
-function Cactus(x,y,width,height)
+class Cactus
 {
-    this.x =x;
-    this.y =y;
+    constructor(x,y,width,height)
+    {
+        this.x =x;
+        this.y =y;
 
-    this.width = width;
-    this.height = height;
+        this.width = width;
+        this.height = height;
+    }
 }
 
 //TO DO 
