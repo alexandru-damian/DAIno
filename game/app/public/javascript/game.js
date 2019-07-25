@@ -1,5 +1,4 @@
 var canv,ctx;
-
 var jumpPressed = false;
 
 var MAX_COEFF_DELAY_ENEMY_FRAMES = 3;
@@ -23,6 +22,8 @@ var FPS = 60
 var INTERVAL = 1000/FPS
 
 let player;
+let Enemy;
+
 let running;
 
 function load_player()
@@ -34,11 +35,16 @@ function load_player()
     let playerY = GROUND_LEVEL_Y;
 
     player = new Player(playerX, playerY, playerWidth, playerHeight);
+    
+    //TO DO
+    //Temp fix
+    Enemy = new Enemies(canv,GROUND_LEVEL_Y);
 
     currentScore = 0;
     Enemy.x_velocity = Enemy.MAX_VELOCITY
 
-    checkpointReached = true;
+    //TO DO Check Trello
+    //checkpointReached = true;
 }
 
 function update_highscore()
@@ -130,7 +136,7 @@ function update()
 {
     update_score();
     update_next_frames();
-    player.update();
+    player.update(jumpPressed);
     if(!nextEnemyFrames)
     {
         Enemy.add_enemy();
@@ -148,16 +154,16 @@ function update()
 function render()
 {
     ctx.clearRect(0, 90, canv.width, canv.height);
-    player.render()
+    player.render(ctx)
 
     render_score();
-    Enemy.render_enemies();
+    Enemy.render_enemies(ctx);
 }
 
 function gameloop()
 {
-    currentTime = Date.now();
-    delta = currentTime - lastTime;
+    let currentTime = Date.now();
+    let delta = currentTime - lastTime;
     
     remainingTime +=delta;
     
@@ -212,5 +218,7 @@ function start_game()
     lastTime = Date.now();
     window.requestAnimationFrame(gameloop);
 }
+
+document.querySelector("#start").addEventListener("click",start_game);
 
 

@@ -1,3 +1,5 @@
+'use strict';
+
 function Cactus(x,y,width,height)
 {
     this.x =x;
@@ -7,9 +9,72 @@ function Cactus(x,y,width,height)
     this.height = height;
 }
 
-var Enemy = 
+//TO DO 
+//Temporary fix for the migration
+class Enemies
 {
+    MIN_WIDTH=20;
+    MAX_WIDTH=80;
 
+    MIN_HEIGHT=30;
+    MAX_HEIGHT=50;
+
+    MAX_VELOCITY=-6;
+    MIN_VELOCITY=-15;
+    
+    x_velocity=-10;
+
+    enemies_keys=["cactus"];
+    enemies=[];
+    
+    constructor(canv,ground_level_y)
+    {
+        this.canv = canv;
+        
+        this.GROUND_LEVEL_Y = ground_level_y;
+    }
+    
+    generate_enemy()
+    {
+
+        let height = random(this.MIN_HEIGHT,this.MAX_HEIGHT);
+        return new Cactus(this.canv.width,this.GROUND_LEVEL_Y - height,random(this.MIN_WIDTH,this.MAX_WIDTH),height);
+    }
+
+    render_enemies(ctx)
+    {
+        this.enemies.forEach( function(element) {
+            ctx.fillRect(element.x, element.y, element.width, element.height);
+        });
+    }
+
+    add_enemy()
+    {
+        let enemy = this.generate_enemy();
+        this.enemies.push(enemy);
+    }
+
+    remove_enemy()
+    {
+        //TO DO:This might be very slow!!!
+        this.enemies.shift();
+    }
+
+    update_enemies()
+    {
+        for(let index in this.enemies)
+        {
+            this.enemies[index].x += this.x_velocity;
+        }
+
+        if(this.enemies.length > 0 && this.enemies[0].x + this.enemies[0].width < 0)
+            this.remove_enemy();
+    }
+    
+}
+
+/* var Enemy = 
+{
     MIN_WIDTH:20,
     MAX_WIDTH:80,
 
@@ -28,13 +93,13 @@ var Enemy =
     {
 
         let height = random(this.MIN_HEIGHT,this.MAX_HEIGHT);
-        return new Cactus(canv.width,GROUND_LEVEL_Y - height,random(this.MIN_WIDTH,this.MAX_WIDTH),height);
+        return new Cactus(this.canv.width,GROUND_LEVEL_Y - height,random(this.MIN_WIDTH,this.MAX_WIDTH),height);
     },
 
-    render_enemies:function ()
+    render_enemies()
     {
         this.enemies.forEach( function(element) {
-            ctx.fillRect(element.x, element.y, element.width, element.height);
+            this.ctx.fillRect(element.x, element.y, element.width, element.height);
         });
     },
 
@@ -50,7 +115,7 @@ var Enemy =
         this.enemies.shift();
     },
 
-    update_enemies:function ()
+    update_enemies()
     {
         for(index in this.enemies) 
         {
@@ -61,4 +126,4 @@ var Enemy =
             this.remove_enemy();
     }
 
-};
+}; */

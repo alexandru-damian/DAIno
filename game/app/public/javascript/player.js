@@ -1,3 +1,5 @@
+'use strict';
+
 class Player
 {
 
@@ -17,7 +19,7 @@ class Player
       this.height = height;
     }
 
-    _jump()
+    _jump(jumpPressed)
     {
         //TO DO Decouple commands from game objects
         if(jumpPressed && !this.#isFalling)
@@ -53,7 +55,8 @@ class Player
         return true;
     }
 
-    update()
+    //TO DO Refactor
+    update(jumpPressed)
     {
         if(this.#isFalling)
         {
@@ -62,7 +65,7 @@ class Player
         }
         else
         {
-            this._jump();
+            this._jump(jumpPressed);
         }
     }
 
@@ -74,7 +77,7 @@ class Player
         this.y = newY;
     }
 
-    render()
+    render(ctx)
     {
         ctx.fillRect(this.x, this.y- this.height, this.width, this.height);
     }
