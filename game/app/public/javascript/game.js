@@ -1,5 +1,4 @@
 var canv,ctx;
-var enemyVel = -10;
 
 var jumpPressed = false;
 
@@ -37,7 +36,7 @@ function load_player()
     player = new Player(playerX, playerY, playerWidth, playerHeight);
 
     currentScore = 0;
-    enemyVel = Enemy.MAX_VELOCITY
+    Enemy.x_velocity = Enemy.MAX_VELOCITY
 
     checkpointReached = true;
 }
@@ -100,12 +99,12 @@ function update_score()
 function update_next_frames()
 {
 
-        if(enemyVel > Enemy.MIN_VELOCITY)
+        if(Enemy.x_velocity > Enemy.MIN_VELOCITY)
         {
-            let enemyDelayFramesCoeff = calculate_delay_coeff(enemyVel);
+            let enemyDelayFramesCoeff = calculate_delay_coeff(Enemy.x_velocity);
             let enemyMultiplierSpaceCoeff = 2;
 
-            minNextEnemyFrames = Math.floor(((canv.width - player.x - player.width - Enemy.MAX_WIDTH)/(-enemyVel))/enemyDelayFramesCoeff);
+            minNextEnemyFrames = Math.floor(((canv.width - player.x - player.width - Enemy.MAX_WIDTH)/(-Enemy.x_velocity))/enemyDelayFramesCoeff);
             maxNextEnemyFrames = enemyMultiplierSpaceCoeff * minNextEnemyFrames;
         }
 }

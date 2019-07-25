@@ -18,6 +18,8 @@ var Enemy =
 
     MAX_VELOCITY:-6,
     MIN_VELOCITY:-15,
+    
+    x_velocity:-10,
 
     enemies_keys:["cactus"],
     enemies:[],
@@ -50,9 +52,10 @@ var Enemy =
 
     update_enemies:function ()
     {
-        this.enemies.forEach( function(element) {
-            element.x += enemyVel;
-        });
+        for(index in this.enemies) 
+        {
+            this.enemies[index].x += this.x_velocity;
+        }
 
         if(this.enemies.length > 0 && this.enemies[0].x + this.enemies[0].width < 0)
             this.remove_enemy();
