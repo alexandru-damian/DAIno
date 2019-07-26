@@ -2,7 +2,7 @@
   "records": [
     {
       "timestamp": 1562753960314,
-      "data": [
+      "actions": [
         {
           "frame": 150,
           "action": "jump"
@@ -27,7 +27,7 @@
     },
     {
       "timestamp": 1562753960314,
-      "data": 
+      "actions": 
       [
         {
           "frame": 150,

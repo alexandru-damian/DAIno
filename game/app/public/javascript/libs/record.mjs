@@ -11,15 +11,25 @@ export class Record
 {
 
     #timestamp;
+    #actions;
 
     constructor(timestamp)
     {
-        this.data = [];
+        this.#actions = [];
     }
 
     add_action(frame, action)
     {
-        this.data.push(new Action(frame, action));
+        this.#actions.push(new Action(frame, action));
+    }
+
+    generate_json()
+    {
+        this.#timestamp = Date.now();
+        const  json = {timestamp:this.#timestamp, actions:this.#actions};
+
+        console ("JSON",JSON.stringify(json))
+
     }
 }
 
