@@ -2,32 +2,27 @@
 
 export class Renderer
 {
-    #canvas;
-    #context;
+    static #canvas;
+    static #context;
 
-    constructor(canvas, graphics_context)
+    static init(canvas, graphics_context)
     {
-        this.#canvas = canvas;
-        this.#context = this.#canvas.getContext(graphics_context);
+        Renderer.#canvas = canvas;
+        Renderer.#context = canvas.getContext(graphics_context);
     }
 
-    get_context()
+    static get_width()
     {
-        return this.#context;
+        return Renderer.#canvas.width;
     }
 
-    get_width()
+    static get_height()
     {
-        return this.#context.width;
+        return Renderer.#canvas.height;
     }
 
-    get_height()
+    static render(x, y, width, height)
     {
-        return this.#context.height;
-    }
-
-    render(x, y, width, height)
-    {
-        this.#context.fillRect(x, y, width, height);
+        Renderer.#context.fillRect(x, y, width, height);
     }
 }
