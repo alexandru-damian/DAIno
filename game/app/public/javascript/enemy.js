@@ -1,5 +1,7 @@
 'use strict';
 
+import {Renderer} from './renderer.js'
+
 class Cactus
 {
     constructor(x,y,width,height)
@@ -14,7 +16,7 @@ class Cactus
 
 //TO DO 
 //Temporary fix for the migration
-class Enemies
+export class Enemies
 {
     MIN_WIDTH=20;
     MAX_WIDTH=80;
@@ -30,10 +32,8 @@ class Enemies
     enemies_keys=["cactus"];
     enemies=[];
     
-    constructor(canv,ground_level_y)
+    constructor(ground_level_y)
     {
-        this.canv = canv;
-        
         this.GROUND_LEVEL_Y = ground_level_y;
     }
     
@@ -41,14 +41,15 @@ class Enemies
     {
 
         let height = random(this.MIN_HEIGHT,this.MAX_HEIGHT);
-        return new Cactus(this.canv.width,this.GROUND_LEVEL_Y - height,random(this.MIN_WIDTH,this.MAX_WIDTH),height);
+        return new Cactus(Renderer.get_width(),this.GROUND_LEVEL_Y - height,random(this.MIN_WIDTH,this.MAX_WIDTH),height);
     }
 
-    render_enemies(ctx)
+    render_enemies()
     {
-        this.enemies.forEach( function(element) {
-            ctx.fillRect(element.x, element.y, element.width, element.height);
-        });
+         for(let index in this.enemies)
+        {
+           Renderer.render(this.enemies[index].x, this.enemies[index].y, this.enemies[index].width, this.enemies[index].height);
+        }
     }
 
     add_enemy()

@@ -1,6 +1,8 @@
 'use strict';
 
-class Player
+import {Renderer} from './renderer.js'
+
+export class Player
 {
 
     #y_velocity = 0;
@@ -12,11 +14,12 @@ class Player
 
     constructor(x, y, width, height) 
     {
-      this.x = x;
-      this.y = y;   
 
-      this.width = width;
-      this.height = height;
+        this.x = x;
+        this.y = y;   
+
+        this.width = width;
+        this.height = height;
     }
 
     _jump(jumpPressed)
@@ -77,9 +80,9 @@ class Player
         this.y = newY;
     }
 
-    render(ctx)
+    render()
     {
-        ctx.fillRect(this.x, this.y- this.height, this.width, this.height);
+        Renderer.render(this.x, this.y- this.height, this.width, this.height);
     }
 
 }

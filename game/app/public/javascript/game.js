@@ -1,3 +1,7 @@
+import {Player} from './player.js'
+import {Renderer} from './renderer.js'
+import {Enemies} from './enemy.js'
+
 var canv,ctx;
 var jumpPressed = false;
 
@@ -38,7 +42,7 @@ function load_player()
     
     //TO DO
     //Temp fix
-    Enemy = new Enemies(canv,GROUND_LEVEL_Y);
+    Enemy = new Enemies(GROUND_LEVEL_Y);
 
     currentScore = 0;
     Enemy.x_velocity = Enemy.MAX_VELOCITY
@@ -76,6 +80,8 @@ function build_config()
 {
     canv = document.getElementById("game");
     ctx = canv.getContext("2d");
+
+    Renderer.init(document.getElementById("game"),"2d");
 
     running = true;
 }
@@ -154,10 +160,10 @@ function update()
 function render()
 {
     ctx.clearRect(0, 90, canv.width, canv.height);
-    player.render(ctx)
+    player.render()
 
     render_score();
-    Enemy.render_enemies(ctx);
+    Enemy.render_enemies();
 }
 
 function gameloop()
