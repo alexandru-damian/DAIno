@@ -2,206 +2,224 @@ import {Player} from './player.js'
 import {Renderer} from './renderer.js'
 import {Enemies} from './enemy.js'
 
-var canv,ctx;
-var jumpPressed = false;
+'use strict'
 
-var MAX_COEFF_DELAY_ENEMY_FRAMES = 3;
-var MIN_COEFF_DELAY_ENEMY_FRAMES = 1;
-
-var GROUND_LEVEL_X = 0;
-var GROUND_LEVEL_Y = 280;
-
-var minNextEnemyFrames = 0;
-var maxNextEnemyFrames = 0;
-
-var nextEnemyFrames = 0;
-
-var highScore = 0;
-var currentScore;
-
-var remainingTime = 0;
-var lastTime;
-
-var FPS = 60
-var INTERVAL = 1000/FPS
-
-let player;
-let Enemy;
-
-let running;
-
-function load_player()
-{
-    let playerWidth = 30;
-    let playerHeight = 50;
-
-    let playerX = 30;
-    let playerY = GROUND_LEVEL_Y;
-
-    player = new Player(playerX, playerY, playerWidth, playerHeight);
+    let remainingTime = 0;
+    let lastTime;
     
-    //TO DO
-    //Temp fix
-    Enemy = new Enemies(GROUND_LEVEL_Y);
+    let FPS = 60;
+    let INTERVAL = 1000/FPS;
 
-    currentScore = 0;
-    Enemy.x_velocity = Enemy.MAX_VELOCITY
+    let canv,ctx;
 
-    //TO DO Check Trello
-    //checkpointReached = true;
-}
-
-function update_highscore()
+class Game
 {
-    if(highScore < currentScore)
-        highScore = currentScore
-}
+    #jumpPressed = false;
+    
+    #MAX_COEFF_DELAY_ENEMY_FRAMES = 3;
+    #MIN_COEFF_DELAY_ENEMY_FRAMES = 1;
+    
+    #GROUND_LEVEL_X = 0;
+    #GROUND_LEVEL_Y = 280;
+    
+    #minNextEnemyFrames = 0;
+    #maxNextEnemyFrames = 0;
+    
+    #nextEnemyFrames = 0;
+    
+    #highScore = 0;
+    #currentScore;
+    
+    #player;
+    #Enemy;
 
-function render_highscore()
-{
-    ctx.clearRect(550, 30, canv.width, 60);
-    ctx.font = "26px Arial";
-    ctx.fillText("High:"+Math.floor(highScore).toString(), 550,60)
-}
+    #running;
 
-function reset_data()
-{
-    update_highscore();
-    render_highscore();
+    load_player()
+    {
+        let playerWidth = 30;
+        let playerHeight = 50;
 
-    load_player();
-    if(Enemy.enemies.length > 0)
-        Enemy.enemies = []
+        let playerX = 30;
+        let playerY = this.#GROUND_LEVEL_Y;
 
-    set_seed(0);
-}
+        this.#player = new Player(playerX, playerY, playerWidth, playerHeight);
 
-function build_config()
-{
-    canv = document.getElementById("game");
-    ctx = canv.getContext("2d");
+        //TO DO
+        //Temp  fix
+        this.#Enemy = new Enemies(this.#GROUND_LEVEL_Y);
 
-    Renderer.init(document.getElementById("game"),"2d");
+        this.#currentScore = 0;
+        this.#Enemy.x_velocity = this.#Enemy.MAX_VELOCITY
 
-    running = true;
-}
+        //TO DO Check Trello
+        //checkpointReached     = true;
+    }
 
-function calculate_delay_coeff(velocity)
-{
-/*
-Based the on the enemy bounderies velocity and the coefficient delay bounderies we get the following function
-f(x)= 0.2x + 4.4
-This was precalculated for less computing power.
-*/
-    return ((0.2 * velocity) + 4.4);
-}
+    get_running_state()
+    {
+        return this.#running;
+    }
 
-function render_score()
-{
-    ctx.clearRect(550, 0, canv.width, 30);
-    ctx.font = "26px Arial";
-    ctx.fillText("Score:"+Math.floor(currentScore).toString(), 550,30)
-}
+    set_jumpPressed_status(jumpPressed)
+    {
+        this.#jumpPressed = jumpPressed
+    }
 
-function update_score()
-{
-    currentScore ++;
-}
+    update_highscore()
+    {
+        if(this.#highScore < this.#currentScore)
+            this.#highScore = this.#currentScore
+    }
 
-function update_next_frames()
-{
+    render_highscore()
+    {
+        ctx.clearRect(550, 30, canv.width, 60);
+        ctx.font = "26px Arial";    
+        ctx.fillText("High:"+Math.floor(this.#highScore).toString(), 550,60)
+    }
 
-        if(Enemy.x_velocity > Enemy.MIN_VELOCITY)
+    reset_data()
+    {
+        this.update_highscore();
+        this.render_highscore(); 
+        
+        this.load_player();
+        if(this.#Enemy.enemies.length > 0)
+            this.#Enemy.enemies = []
+
+        set_seed(0);
+    }
+
+    build_config()
+    {
+        canv = document.getElementById("game");
+        ctx = canv.getContext("2d");
+
+        Renderer.init(document.getElementById("game"),"2d");
+        
+        this.#running = true;
+    }
+
+    calculate_delay_coeff(velocity)
+    {
+    /*
+    Ba  sed the on the enemy bounderies velocity and the coefficient delay bounderies we get the following f(x)= 0.2x + 4.4
+    This was precalculated for less computing power.    
+    */
+        return ((0.2 * velocity) + 4.4);
+    }
+
+    render_score()
+    {
+        ctx.clearRect(550, 0, canv.width, 30);
+        ctx.font = "26px Arial";    
+        ctx.fillText("Score:"+Math.floor(this.#currentScore).toString(), 550,30)
+    }
+
+    update_score()
+    {
+        this.#currentScore ++;
+    }
+
+    update_next_frames()
+    {
+        
+        if(this.#Enemy.x_velocity > this.#Enemy.MIN_VELOCITY)
         {
-            let enemyDelayFramesCoeff = calculate_delay_coeff(Enemy.x_velocity);
+            let enemyDelayFramesCoeff = this.calculate_delay_coeff(this.#Enemy.x_velocity);
             let enemyMultiplierSpaceCoeff = 2;
 
-            minNextEnemyFrames = Math.floor(((canv.width - player.x - player.width - Enemy.MAX_WIDTH)/(-Enemy.x_velocity))/enemyDelayFramesCoeff);
-            maxNextEnemyFrames = enemyMultiplierSpaceCoeff * minNextEnemyFrames;
+            this.#minNextEnemyFrames = Math.floor(((canv.width - this.#player.x - this.#player.width - this.#Enemy.MAX_WIDTH)/(-this.#Enemy.x_velocity))/enemyDelayFramesCoeff);
+            this.#maxNextEnemyFrames = enemyMultiplierSpaceCoeff * this.#minNextEnemyFrames;    
         }
-}
-
-function end_game()
-{
-    running = false;
-    document.getElementById('start').disabled = false;
-}
-
-function collide()
-{
-    if(player.y > GROUND_LEVEL_Y)
-        player.stay_on_ground(GROUND_LEVEL_Y)
-    
-    let enemy = Enemy.enemies[0];
-    
-    if(Enemy.enemies.length > 0 && player.hit(enemy))
-        end_game()
-}
-
-function update()
-{
-    update_score();
-    update_next_frames();
-    player.update(jumpPressed);
-    if(!nextEnemyFrames)
-    {
-        Enemy.add_enemy();
-        nextEnemyFrames = random(minNextEnemyFrames ,maxNextEnemyFrames)
-    }
-    else
-    {
-        nextEnemyFrames --;
     }
 
-    Enemy.update_enemies();
-    collide();
+    end_game()
+    {
+        this.#running = false;
+        document.getElementById('start').disabled = false;
+    }
+
+    collide()
+    {   
+        if(this.#player.y > this.#GROUND_LEVEL_Y)
+        this.#player.stay_on_ground(this.#GROUND_LEVEL_Y)
+        
+        let enemy = this.#Enemy.enemies[0];
+        
+        if(this.#Enemy.enemies.length > 0 && this.#player.hit(enemy))
+        this.end_game()
+    }
+
+    update()
+    {
+        this.update_score();
+        this.update_next_frames();
+
+        this.#player.update(this.#jumpPressed);
+        if(!this.#nextEnemyFrames)    
+        {
+            this.#Enemy.add_enemy();
+            this.#nextEnemyFrames = random(this.#minNextEnemyFrames ,this.#maxNextEnemyFrames)
+        }
+        else
+        {
+            this.#nextEnemyFrames --;
+        }
+        
+            this.#Enemy.update_enemies();
+            this.collide();
+    }
+
+    render()
+    {
+        ctx.clearRect(0, 90, canv.width, canv.height);
+        this.#player.render()
+        
+        this.render_score();
+        this.#Enemy.render_enemies();
+    }
+
+    test()
+    {
+        let data = {name:"John", age:31, city:"Tokyo"};
+
+        json_post(data,function(data)
+        {
+            console.log('TADAM');
+            console.log(JSON.stringify(data));
+        });
+    }
+
+    controller_listener(ev)
+    {
+        game.set_jumpPressed_status((ev.type == 'keydown' || ev.type == 'mousedown')?true:false);
+    }
 }
 
-function render()
-{
-    ctx.clearRect(0, 90, canv.width, canv.height);
-    player.render()
-
-    render_score();
-    Enemy.render_enemies();
-}
+let game = new Game();
 
 function gameloop()
-{
-    let currentTime = Date.now();
-    let delta = currentTime - lastTime;
-    
-    remainingTime +=delta;
-    
-    console.log('FPS:',(1000/delta).toFixed(0));
-    
-    if(remainingTime > INTERVAL)
     {
-        update();
-        remainingTime = remainingTime - INTERVAL;
+        let currentTime = Date.now();
+        let delta = currentTime - lastTime;
+
+        remainingTime +=delta;
+        console.log('FPS:',(1000/delta).toFixed(0));
+            
+        if(remainingTime > INTERVAL)
+        {
+            game.update();
+            game.remainingTime = remainingTime - INTERVAL;
+        }
+
+            game.render();
+            lastTime = currentTime
+        
+        if(game.get_running_state())
+            window.requestAnimationFrame(gameloop);
     }
-    
-    render();
-    lastTime = currentTime
-
-    if(running)
-    window.requestAnimationFrame(gameloop);
-}
-
-function controller_listener(ev)
-{
-    jumpPressed = (ev.type == 'keydown' || ev.type == 'mousedown')?true:false
-}
-
-function test()
-{
-   var data = {name:"John", age:31, city:"Tokyo"};
-
-    json_post(data,function(data) {
-                             console.log('TADAM');
-                             console.log(JSON.stringify(data));})
-
-}
 
 function start_game()
 {
@@ -209,19 +227,20 @@ function start_game()
     //test()
     document.getElementById('start').disabled = true
 
-    build_config();
-    reset_data();
+    game.build_config();
+    game.reset_data();
+
+    window.addEventListener("keydown", game.controller_listener);
+    window.addEventListener("keyup", game.controller_listener);
     
-    window.addEventListener("keydown", controller_listener);
-    window.addEventListener("keyup", controller_listener);
+    window.addEventListener("mousedown",game.controller_listener);
+    window.addEventListener("mouseup",game.controller_listener);
     
-    window.addEventListener("mousedown",controller_listener);
-    window.addEventListener("mouseup",controller_listener);
-    
-    window.addEventListener("touchstart",controller_listener);
-    window.addEventListener("touchend",controller_listener)
+    window.addEventListener("touchstart",game.controller_listener);
+    window.addEventListener("touchend",game.controller_listener);
 
     lastTime = Date.now();
+
     window.requestAnimationFrame(gameloop);
 }
 
