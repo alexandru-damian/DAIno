@@ -181,7 +181,15 @@ class Game
         this.#Enemy.render_enemies();
     }
 
-    test()
+    controller_listener(ev)
+    {
+        game.set_jumpPressed_status((ev.type == 'keydown' || ev.type == 'mousedown')?true:false);
+    }
+}
+
+let game = new Game();
+
+function test()
     {
         let data = {name:"John", age:31, city:"Tokyo"};
 
@@ -190,15 +198,13 @@ class Game
             console.log('TADAM');
             console.log(JSON.stringify(data));
         });
-    }
 
-    controller_listener(ev)
-    {
-        game.set_jumpPressed_status((ev.type == 'keydown' || ev.type == 'mousedown')?true:false);
+        json_get(function(data)
+        {
+            console.log('TGTBATU');
+            console.log(JSON.stringify(data));
+        });
     }
-}
-
-let game = new Game();
 
 function gameloop()
     {

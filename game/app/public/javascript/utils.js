@@ -33,14 +33,23 @@ function random(min,max)
     return Math.floor((max - min +1)*rand())+min
 }
 
-function json_post(data, callback)
+function generic_json_request(type,url,data,callback)
 {
-     $.ajax({
-        type: 'POST',
+    $.ajax({
+        type: type,
         data: JSON.stringify(data),
         contentType: 'application/json',
-        url: '/save-record',                      
+        url: url,
         success: callback
     });
 }
 
+function json_post(data, callback)
+{
+    generic_json_request('POST','/save-record',data,callback);
+}
+
+function json_get(callback)
+{
+    generic_json_request('GET','../config/game.json',"",callback);
+}
