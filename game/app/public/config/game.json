@@ -1,0 +1,10 @@
+{
+    "DAIno":
+    {
+        "graphics":
+        {
+            "context":"2d",
+            "fps": 60
+        }
+    }
+}
