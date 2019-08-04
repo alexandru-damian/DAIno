@@ -1,6 +1,7 @@
 import {Player} from './player.js'
 import {Renderer} from './renderer.js'
 import {Enemies} from './enemy.js'
+import {DeviceManager, KeyboardDevice, Devices} from './input.js'
 
 'use strict'
 
@@ -14,8 +15,6 @@ import {Enemies} from './enemy.js'
 
 class Game
 {
-    #jumpPressed = false;
-    
     #MAX_COEFF_DELAY_ENEMY_FRAMES = 3;
     #MIN_COEFF_DELAY_ENEMY_FRAMES = 1;
     
@@ -34,6 +33,7 @@ class Game
     #Enemy;
 
     #running;
+    #deviceManager;
 
     load_player()
     {
@@ -52,18 +52,13 @@ class Game
         this.#currentScore = 0;
         this.#Enemy.x_velocity = this.#Enemy.MAX_VELOCITY
 
-        //TO DO Check Trello
-        //checkpointReached     = true;
+        this.#deviceManager = new DeviceManager();
+        this.#deviceManager.register_device(new KeyboardDevice(this.#player))
     }
 
     get_running_state()
     {
         return this.#running;
-    }
-
-    set_jumpPressed_status(jumpPressed)
-    {
-        this.#jumpPressed = jumpPressed
     }
 
     update_highscore()
@@ -157,8 +152,8 @@ class Game
         this.update_score();
         this.update_next_frames();
 
-        this.#player.update(this.#jumpPressed);
-        if(!this.#nextEnemyFrames)    
+        this.#player.update();
+        if(!this.#nextEnemyFrames)
         {
             this.#Enemy.add_enemy();
             this.#nextEnemyFrames = random(this.#minNextEnemyFrames ,this.#maxNextEnemyFrames)
@@ -179,11 +174,6 @@ class Game
         
         this.render_score();
         this.#Enemy.render_enemies();
-    }
-
-    controller_listener(ev)
-    {
-        game.set_jumpPressed_status((ev.type == 'keydown' || ev.type == 'mousedown')?true:false);
     }
 }
 
@@ -221,7 +211,7 @@ function gameloop()
         }
 
             game.render();
-            lastTime = currentTime
+            lastTime = currentTime;
         
         if(game.get_running_state())
             window.requestAnimationFrame(gameloop);
@@ -231,19 +221,11 @@ function start_game()
 {
     //Enable to post request
     //test()
-    document.getElementById('start').disabled = true
+
+    document.getElementById('start').disabled = true;
 
     game.build_config();
     game.reset_data();
-
-    window.addEventListener("keydown", game.controller_listener);
-    window.addEventListener("keyup", game.controller_listener);
-    
-    window.addEventListener("mousedown",game.controller_listener);
-    window.addEventListener("mouseup",game.controller_listener);
-    
-    window.addEventListener("touchstart",game.controller_listener);
-    window.addEventListener("touchend",game.controller_listener);
 
     lastTime = Date.now();
 

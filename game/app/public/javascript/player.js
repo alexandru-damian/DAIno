@@ -11,6 +11,7 @@ export class Player
     #Y_GRAVITATIONAL_ACCELERATION = 1;
 
     #isFalling = false;
+    #jumpPressed = false;
 
     constructor(x, y, width, height) 
     {
@@ -22,10 +23,15 @@ export class Player
         this.height = height;
     }
 
-    _jump(jumpPressed)
+    set_jumpPressed_status(jumpPressed)
+    {
+        this.#jumpPressed = jumpPressed
+    }
+
+    _jump()
     {
         //TO DO Decouple commands from game objects
-        if(jumpPressed && !this.#isFalling)
+        if(this.#jumpPressed && !this.#isFalling)
         {
             this.#y_velocity -= this.#Y_ACCELERATION;
             this.#isFalling = true;
@@ -59,7 +65,7 @@ export class Player
     }
 
     //TO DO Refactor
-    update(jumpPressed)
+    update()
     {
         if(this.#isFalling)
         {
@@ -68,7 +74,7 @@ export class Player
         }
         else
         {
-            this._jump(jumpPressed);
+            this._jump();
         }
     }
 

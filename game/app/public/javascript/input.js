@@ -1,26 +1,79 @@
 'use strict'
 
-const Actions = 
+const Keys = 
 {
-    JUMP : 'jump'
+    KEY_UP : 38,
+    KEY_DOWN : 40
+}
+
+class JumpCommand
+{
+    execute(player, status)
+    {
+        player.set_jumpPressed_status(status);
+    }
 }
 
 class Input
 {
     #commands = new Map();
 
-    register_command(action, command)
+    register_command(key, command)
     {
-        this.#commands.set(action, command);
+        this.#commands.set(key, command);
     }
 
-    get_command(action)
+    get_command(key)
     {
-        return this.#commands.get(action);
+        return this.#commands.get(key);
     }
 }
 
-export {Actions, GenericInput};
+class KeyboardDevice
+{
+    #inputHandler;
+    #player;
+
+    constructor(player)
+    {
+        this.#inputHandler = new Input();
+        this.#player = player;
+
+        window.addEventListener("keydown", this.controls.bind(this));
+        window.addEventListener("keyup", this.controls.bind(this));
+
+        this._map_commands();
+    }
+
+    _map_commands()
+    {
+        this.#inputHandler.register_command(Keys.KEY_UP,new JumpCommand());
+    }
+
+    controls(ev)
+    {
+        let status = (ev.type == 'keydown' || ev.type == 'mousedown')?true:false;
+
+        this.#inputHandler.get_command(ev.keyCode).execute(this.#player,status);
+    }
+}
+
+const Devices = 
+{
+    Keyboard : 0
+}
+
+class DeviceManager
+{
+    #devices = new Map();
+
+    register_device(type,device)
+    {
+        this.#devices.set(device);
+    }
+}
+
+export {DeviceManager, KeyboardDevice, Devices};
 
 // CLASS Input
 // {
