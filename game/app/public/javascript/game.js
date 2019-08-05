@@ -2,6 +2,7 @@ import {Player} from './player.js'
 import {Renderer} from './renderer.js'
 import {Enemies} from './enemy.js'
 import {DeviceManager, KeyboardDevice, Devices} from './input.js'
+import {Score} from './score.js'
 
 'use strict'
 
@@ -26,34 +27,40 @@ class Game
     
     #nextEnemyFrames = 0;
     
-    #highScore = 0;
-    #currentScore;
+    // #highScore = 0;
+    // #currentScore;
+    
+    #score;
     
     #player;
     #Enemy;
 
     #running;
     #deviceManager;
-
-    load_player()
+    
+    constructor()
     {
+        
         let playerWidth = 30;
         let playerHeight = 50;
 
         let playerX = 30;
         let playerY = this.#GROUND_LEVEL_Y;
-
+        
         this.#player = new Player(playerX, playerY, playerWidth, playerHeight);
+        
+        this.#deviceManager = new DeviceManager();
+        this.#deviceManager.register_device(new KeyboardDevice(this.#player));
 
         //TO DO
         //Temp  fix
         this.#Enemy = new Enemies(this.#GROUND_LEVEL_Y);
+        this.#score = new Score();
+    }
 
-        this.#currentScore = 0;
+    load_player()
+    {
         this.#Enemy.x_velocity = this.#Enemy.MAX_VELOCITY
-
-        this.#deviceManager = new DeviceManager();
-        this.#deviceManager.register_device(new KeyboardDevice(this.#player))
     }
 
     get_running_state()
@@ -61,23 +68,22 @@ class Game
         return this.#running;
     }
 
-    update_highscore()
+/*     update_highscore()
     {
         if(this.#highScore < this.#currentScore)
             this.#highScore = this.#currentScore
-    }
+    } */
 
-    render_highscore()
+/*     render_highscore()
     {
         ctx.clearRect(550, 30, canv.width, 60);
         ctx.font = "26px Arial";    
         ctx.fillText("High:"+Math.floor(this.#highScore).toString(), 550,60)
-    }
+    } */
 
     reset_data()
     {
-        this.update_highscore();
-        this.render_highscore(); 
+        this.#score.reset();
         
         this.load_player();
         if(this.#Enemy.enemies.length > 0)
@@ -105,17 +111,18 @@ class Game
         return ((0.2 * velocity) + 4.4);
     }
 
-    render_score()
+/*    render_score()
     {
         ctx.clearRect(550, 0, canv.width, 30);
         ctx.font = "26px Arial";    
         ctx.fillText("Score:"+Math.floor(this.#currentScore).toString(), 550,30)
     }
+    */
 
-    update_score()
+/*     update_score()
     {
         this.#currentScore ++;
-    }
+    } */
 
     update_next_frames()
     {
@@ -149,7 +156,7 @@ class Game
 
     update()
     {
-        this.update_score();
+        this.#score.update();
         this.update_next_frames();
 
         this.#player.update();
@@ -172,7 +179,7 @@ class Game
         ctx.clearRect(0, 90, canv.width, canv.height);
         this.#player.render()
         
-        this.render_score();
+        this.#score.render();
         this.#Enemy.render_enemies();
     }
 }
