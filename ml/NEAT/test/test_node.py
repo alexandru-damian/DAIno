@@ -11,8 +11,4 @@ class TestNode(unittest.TestCase):
         self.assertEqual(self.node.value, 0)
 
 
-if __name__ == '__main__':
-    unittest.main()
-
-
 
