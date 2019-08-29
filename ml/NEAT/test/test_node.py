@@ -1,5 +1,5 @@
 import unittest
-from src import node
+from neat import node
 
 
 class TestNode(unittest.TestCase):
@@ -8,7 +8,8 @@ class TestNode(unittest.TestCase):
         self.node = node.Node()
 
     def test_node_without_specified_value_must_be_zero(self):
-        self.assertEqual(self.node.value, 0)
+        self.assertEqual(self.node.get(), 0)
+
 
 
 
