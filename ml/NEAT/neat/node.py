@@ -4,3 +4,7 @@ class Node:
 
     def get(self):
         return self.__value
+
+    def set(self, value):
+        self.__value = value
+        return True
