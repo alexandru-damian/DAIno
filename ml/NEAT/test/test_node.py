@@ -15,14 +15,14 @@ class TestNode(unittest.TestCase):
         self.assertEqual(self.node.get(), 0)
 
     def test_node_can_set_a_numerical_value(self):
-        self.assertTrue(self.node.set(7))
-        self.assertEqual(self.node.get(), 7, "Integer value could not be set")
+        self.assertTrue(self.node.set(7), "Integer value could not be set")
+        self.assertEqual(self.node.get(), 7)
 
-        self.assertTrue(self.node.set(10.343))
-        self.assertEqual(self.node.get(), 10.343, "Float value could not be set")
+        self.assertTrue(self.node.set(10.343), "Float value could not be set")
+        self.assertEqual(self.node.get(), 10.343)
 
-        self.assertTrue(self.node.set(1 + 4j))
-        self.assertEqual(self.node.get(), 1 + 4j, "Complex value could not be set")
+        self.assertTrue(self.node.set(1 + 4j), "Complex value could not be set")
+        self.assertEqual(self.node.get(), 1 + 4j)
 
     def test_node_cannot_set_a_non_numerical_value(self):
         self.assertFalse(self.node.set("The quick brown fox jumps over the lazy dog"))
