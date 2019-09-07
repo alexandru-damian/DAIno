@@ -27,3 +27,8 @@ class TestNode(unittest.TestCase):
     def test_node_cannot_set_a_non_numerical_value(self):
         self.assertFalse(self.node.set("The quick brown fox jumps over the lazy dog"))
         self.assertFalse(self.node.set(DummyClass()))
+
+    def test_adding_new_node_should_not_have_same_id(self):
+        dummy_node = node.Node()
+
+        self.assertNotEqual(dummy_node.get_id(), self.node.get_id())
