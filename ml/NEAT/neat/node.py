@@ -2,13 +2,13 @@ import numbers
 
 
 class Node:
-    __id = 0
+    __id = -1
 
     def __init__(self, value=0):
         self.__value = value
-        self.__current_id = Node.__id
 
         Node.__id += 1
+        self.__current_id = Node.__id
 
     def get(self):
         return self.__value
@@ -22,4 +22,8 @@ class Node:
 
     def get_id(self):
         return self.__current_id
+
+    @staticmethod
+    def get_latest_id():
+        return Node.__id
 
