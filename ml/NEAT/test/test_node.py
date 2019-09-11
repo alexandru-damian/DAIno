@@ -32,6 +32,4 @@ class TestNode(unittest.TestCase):
         dummy_node = node.Node()
 
         self.assertNotEqual(dummy_node.get_id(), self.node.get_id())
-        self.assertEqual(dummy_node.get_id(), node.Node.count())
-
-
+        self.assertEqual(dummy_node.get_id(), node.Node.get_last_id())
