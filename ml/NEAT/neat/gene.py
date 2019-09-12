@@ -12,8 +12,8 @@ class Gene:
 
         self.__status = status
 
-    def get_in_out_nodes(self):
+    def get_in_out_nodes(self) -> [node.Node, node.Node]:
         return self.__in_node, self.__out_node
 
-    def get_status(self):
+    def get_status(self) -> bool:
         return self.__status
