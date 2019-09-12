@@ -15,3 +15,8 @@ class TestGene(unittest.TestCase):
         with self.assertRaises(Exception):
             gene.Gene(dummy_node, dummy_node)
 
+    def test_gene_by_default_has_status_enabled(self):
+        dummy_gene = gene.Gene(node.Node(), node.Node())
+
+        self.assertTrue(dummy_gene.get_status())
+
