@@ -1,4 +1,6 @@
 import unittest
+import numpy as np
+
 from neat import node, gene
 
 
@@ -19,4 +21,20 @@ class TestGene(unittest.TestCase):
         dummy_gene = gene.Gene(node.Node(), node.Node())
 
         self.assertTrue(dummy_gene.get_status())
+
+    def test_weight_is_in_interval_for_100_genes(self):
+
+        for index in range(0, 100):
+            gene_weight = gene.Gene(node.Node(), node.Node()).get_weight()
+
+            self.assertGreaterEqual(gene_weight, 0)
+            self.assertLess(gene_weight, 1)
+
+
+
+
+
+
+
+
 

@@ -1,4 +1,5 @@
 from neat import node
+import numpy as np
 
 
 class Gene:
@@ -11,9 +12,13 @@ class Gene:
         self.__out_node = out_node
 
         self.__status = status
+        self.__weight = np.random.rand(1)
 
     def get_in_out_nodes(self) -> [node.Node, node.Node]:
         return self.__in_node, self.__out_node
 
     def get_status(self) -> bool:
         return self.__status
+
+    def get_weight(self) -> float:
+        return self.__weight
