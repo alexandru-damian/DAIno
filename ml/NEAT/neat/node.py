@@ -1,7 +1,9 @@
 import numbers
 
+from neat import identifiable
 
-class Node:
+
+class Node(identifiable.Identifiable):
     __id = 0
 
     def __init__(self, value: numbers.Number = 0):
