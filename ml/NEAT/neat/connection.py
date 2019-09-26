@@ -2,7 +2,7 @@ from neat import node
 import numpy as np
 
 
-class Gene:
+class Connection:
     def __init__(self, in_node: node.Node, out_node: node.Node, status: bool = True):
 
         if in_node.get_id() == out_node.get_id():
