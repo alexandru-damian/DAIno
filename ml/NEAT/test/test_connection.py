@@ -30,6 +30,14 @@ class TestConnection(unittest.TestCase):
             self.assertGreaterEqual(connection_weight, 0)
             self.assertLess(connection_weight, 1)
 
+    def test_adding_two_new_connections_should_not_have_same_id(self):
+
+        first_dummy_connection = connection.Connection(node.Node(), node.Node())
+        second_dummy_connection = connection.Connection(node.Node(), node.Node())
+
+        self.assertNotEqual(first_dummy_connection.get_id(), second_dummy_connection.get_id())
+        self.assertEqual(second_dummy_connection.get_id(), connection.Connection.get_last_id())
+
 
 
 

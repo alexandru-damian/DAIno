@@ -28,4 +28,3 @@ class Node(identifiable.Identifiable):
     @staticmethod
     def get_last_id() -> int:
         return Node.__id
-
