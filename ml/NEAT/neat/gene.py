@@ -1,7 +1,7 @@
 import abc
 
 
-class Identifiable(abc.ABC):
+class Gene(abc.ABC):
 
     @staticmethod
     @abc.abstractmethod

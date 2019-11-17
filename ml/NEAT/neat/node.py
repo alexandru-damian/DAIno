@@ -1,8 +1,8 @@
 import numbers
-from neat import identifiable
+from neat import gene
 
 
-class Node(identifiable.Identifiable):
+class Node(gene.Gene):
     __id = 0
     __nodes = dict()
 
@@ -12,11 +12,11 @@ class Node(identifiable.Identifiable):
         Node.__id += 1
         self.__current_id = Node.__id
 
-    def connect(self, connectio_id, in_node_id):
-        if connectio_id is None or in_node_id is None:
+    def connect(self, connection_id, in_node_id) -> bool:
+        if connection_id is None or in_node_id is None:
             return False
 
-        self.__nodes[in_node_id] = connectio_id
+        self.__nodes[in_node_id] = connection_id
         return True
 
     def get(self) -> numbers.Number:

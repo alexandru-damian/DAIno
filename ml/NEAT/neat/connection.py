@@ -1,8 +1,8 @@
-from neat import node, identifiable
+from neat import node, gene
 import numpy as np
 
 
-class Connection(identifiable.Identifiable):
+class Connection(gene.Gene):
 
     __id = 0
 
