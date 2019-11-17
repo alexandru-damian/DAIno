@@ -1,6 +1,4 @@
 import unittest
-import numpy as np
-
 from neat import node, connection
 
 
@@ -37,6 +35,8 @@ class TestConnection(unittest.TestCase):
 
         self.assertNotEqual(first_dummy_connection.get_id(), second_dummy_connection.get_id())
         self.assertEqual(second_dummy_connection.get_id(), connection.Connection.get_last_id())
+
+
 
 
 

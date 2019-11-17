@@ -1,5 +1,5 @@
 import unittest
-from neat import node
+from neat import node, connection
 
 
 class DummyClass:
@@ -33,3 +33,14 @@ class TestNode(unittest.TestCase):
 
         self.assertNotEqual(dummy_node.get_id(), self.node.get_id())
         self.assertEqual(dummy_node.get_id(), node.Node.get_last_id())
+
+    def test_cant_connect_with_invalid_connection(self):
+        self.assertFalse(self.node.connect(None, node.Node().get_id()))
+
+    def test_cant_connect_with_invalid_node(self):
+        self.assertFalse(self.node.connect(connection.Connection(node.Node(), node.Node()).get_id(), None))
+
+    def test_can_connect_valid_node(self):
+        self.assertTrue(self.node.connect(connection.Connection(node.Node(), node.Node()).get_id()
+                                           , node.Node().get_id()))
+
