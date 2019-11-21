@@ -6,13 +6,13 @@ class Connection(gene.Gene):
 
     __id = 0
 
-    def __init__(self, in_node: node.Node, out_node: node.Node, status: bool = True):
+    def __init__(self, in_node_id: int, out_node_id: int, status: bool = True):
 
-        if in_node.get_id() == out_node.get_id():
+        if in_node_id == out_node_id:
             raise Exception('In and out node must be different')
 
-        self.__in_node = in_node
-        self.__out_node = out_node
+        self.__in_node_id = in_node_id
+        self.__out_node_id = out_node_id
 
         self.__status = status
         self.__weight = np.random.rand(1)
@@ -20,8 +20,8 @@ class Connection(gene.Gene):
         Connection.__id += 1
         self.__current_id = Connection.__id
 
-    def get_in_out_nodes(self) -> [node.Node, node.Node]:
-        return self.__in_node, self.__out_node
+    def get_in_out_nodes(self) -> [int, int]:
+        return self.__in_node_id, self.__out_node_id
 
     def get_status(self) -> bool:
         return self.__status
