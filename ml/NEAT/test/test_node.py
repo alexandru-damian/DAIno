@@ -4,10 +4,6 @@ from neat import node, connection
 from unittest.mock import patch, Mock
 
 
-class DummyClass:
-    pass
-
-
 class TestNode(unittest.TestCase):
 
     def setUp(self):

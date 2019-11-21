@@ -1,4 +1,5 @@
 import unittest
+
 from neat import node, connection
 
 
