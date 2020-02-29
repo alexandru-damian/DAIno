@@ -5,7 +5,7 @@ from neat import node
 class Genotype:
     class RefCounter:
         def __init__(self):
-            self.__counter: int = 0
+            self.__counter: int = 1
 
         def increment(self):
             self.__counter += 1
@@ -41,14 +41,17 @@ class Genotype:
                 self.__nodes[elem].increment()
 
     def __remove_node(self, nodes: [int, int]) -> bool:
+
+        status = False
+
         for elem in nodes:
             node_ref_counter: Genotype.RefCounter = self.__nodes.get(elem)
 
             node_ref_counter.decrement()
             if node_ref_counter.get_counter() is 0:
                 del self.__nodes[elem]
-                return True
-        return False
+                status = True
+        return status
 
     def get_nodes(self):
         return self.__nodes
